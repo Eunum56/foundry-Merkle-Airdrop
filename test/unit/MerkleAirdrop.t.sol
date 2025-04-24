@@ -7,7 +7,7 @@ import {MerkleAirdrop} from "../../src/MerkleAirdrop.sol";
 import {MernToken} from "../../src/MernToken.sol";
 import {DeployMerkleAirdrop} from "../../script/DeployMerkleAirdrop.s.sol";
 
-import {ZkSyncChainChecker} from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
+import {ZkSyncChainChecker} from "foundry-devops/ZkSyncChainChecker.sol";
 
 contract MerkleAirdropTest is ZkSyncChainChecker, Test {
     MerkleAirdrop public airdrop;
@@ -21,6 +21,7 @@ contract MerkleAirdropTest is ZkSyncChainChecker, Test {
     bytes32 public proofTwo = 0xe5ebd1e1b5a5478a944ecab36a9a954ac3b6b8216875f6524caa7a1d87096576;
     bytes32[] public PROOF = [proofOne, proofTwo];
 
+    address public gasPayer = makeAddr("gasPayer");
     address public user;
     uint256 userPriKey;
 
@@ -39,9 +40,15 @@ contract MerkleAirdropTest is ZkSyncChainChecker, Test {
 
     function testUserCanClaim() public {
         uint256 startingBalance = token.balanceOf(user);
+        bytes32 digest = airdrop.getMessage(user, AMOUNT_TO_CLAIM);
 
-        vm.prank(user);
-        airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF);
+        // vm.prank(user);
+        // prank the user to sign the transaction
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPriKey, digest);
+
+        // claims the tokens by gasPayer using signed message by user.
+        vm.prank(gasPayer);
+        airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF, v, r, s);
 
         uint256 endingBalance = token.balanceOf(user);
         console.log("Ending Balance", endingBalance);
