@@ -3,60 +3,59 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Foundry](https://img.shields.io/badge/Built%20with-Foundry-%237212dd)
 
-This project implements a **gas-efficient Merkle Airdrop system**, allowing eligible users to claim tokens by submitting a Merkle proof that validates their address and allocation.
-
-Built while following the **Cyfrin Updraft** course, this project demonstrates how to securely handle large-scale airdrops **without storing all user data on-chain**.
+A smart contract project that implements a **Merkle Tree-based airdrop system** to distribute tokens in a **gas-efficient** and **verifiable** way. This project was completed while following the **Cyfrin Updraft** course, and it helped deepen understanding of key cryptographic and Ethereum transaction concepts.
 
 ---
 
-## ✨ Features
+## ✨ Highlights
 
-- ✅ Efficient token distribution without storing every recipient on-chain
-- 🌳 Uses **Merkle Trees** to validate claims
-- 🛡️ Prevents double-claiming with a bitmap (gas optimized)
-- 🔐 Verifies proofs with `MerkleProof.verify()` from OpenZeppelin
-- 📦 Compatible with Foundry and Forge testing
-
----
-
-## 📚 How It Works
-
-1. Off-chain, you build a **Merkle Tree** from a list of eligible addresses and allocations.
-2. The contract stores only the **Merkle Root** on-chain.
-3. Each user can claim tokens by submitting:
-   - Their index
-   - Address
-   - Allocated amount
-   - Merkle proof
-4. The contract checks:
-   - If they’ve already claimed
-   - If their Merkle proof is valid
-5. If valid, it sends them the airdropped tokens and marks them as claimed.
+- ✅ Gas-efficient airdrop using **Merkle Trees**
+- 🔐 Merkle Proof verification with OpenZeppelin’s `MerkleProof.sol`
+- 🧾 Claim eligibility verification using minimal storage
+- ❌ Prevents double-claiming with a bitmap (gas optimized)
+- ⚡ Covers signature verification fundamentals using **ECDSA**
 
 ---
 
-## 🔧 Tech Stack
+## 📚 What I Learned
 
-- **Solidity** `^0.8.24`
+During this build, I explored many advanced Ethereum concepts:
+
+- 🔑 How ECDSA signatures work
+- ✍️ V, R, S components of Ethereum signatures
+- 📄 EIP-191 & EIP-712 message structures
+- ⚙️ Merkle Tree structure & verification
+- 🧐 How calldata and transaction types impact cost
+- 🟦 Understanding blob transactions & blob gas
+
+---
+
+## 🧠 Tech Stack
+
+- **Solidity** `^0.8.x`
 - **Framework**: [Foundry](https://book.getfoundry.sh/)
-- **Libraries**: OpenZeppelin's `MerkleProof.sol`
-- **Tools**: Forge tests, hardcoded Merkle root for simplicity
+- **Libraries**: OpenZeppelin `MerkleProof`, `ECDSA`
+- **Tools**: `forge coverage`, `forge test`, local scripting
 
 ---
 
 ## 🧪 Testing
 
-Tests cover:
+All critical functionality is tested, including:
 
-- ✅ Successful claim with valid proof
-- ⚠️ Reverts on invalid proof
+- ✅ Successful claim with valid Merkle proof
 - ❌ Reverts on double claim
-- 🩵 Emits `Claim` event
+- ⚠️ Reverts on invalid proof
+- 📡 Proper `Claimed` event emission
 
-To run tests:
-
+Run tests:
 ```bash
 forge test -vv
+```
+
+Run coverage:
+```bash
+forge coverage
 ```
 
 ---
@@ -78,7 +77,7 @@ forge test -vv
 
 ---
 
-## 🧪 Example Claim Call
+## 🛠️ Example Usage
 
 ```solidity
 airdrop.claim(
@@ -99,6 +98,6 @@ MIT © 2024
 
 ## 👨‍💻 Author
 
-Made with 💡 and `forge coverage` by [Muzammil](https://github.com/Eunum56)  
-> Another step closer to smart contract mastery. On-chain, on-point. 🔗🚀
+Built with 🔥 by [@Eunum56](https://github.com/Eunum56)  
+> From learning Merkle Trees to mastering cryptographic proofs — this was an essential DeFi building block. Onwards to audits and beyond! 🚀
 
