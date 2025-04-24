@@ -77,19 +77,6 @@ forge coverage
 
 ---
 
-## 🛠️ Example Usage
-
-```solidity
-airdrop.claim(
-    0,                      // index
-    0xYourAddress,          // claimer
-    1000 * 1e18,            // amount
-    proof                   // bytes32[] calldata
-);
-```
-
----
-
 ## 📜 License
 
 MIT © 2024
